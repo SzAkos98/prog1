@@ -27,7 +27,7 @@ tiszta_lehet (const char *titkos, int titkos_meret)
 
   double szohossz = atlagos_szohossz (titkos, titkos_meret);
 
-  return szohossz > 6.0 && szohossz < 9.0
+  return szohossz > 1.0 && szohossz < 20.0
     && strcasestr (titkos, "hogy") && strcasestr (titkos, "nem")
     && strcasestr (titkos, "az") && strcasestr (titkos, "ha");
 
@@ -63,11 +63,8 @@ exor_tores (const char kulcs[], int kulcs_meret, char titkos[],
 int
 main (void)
 {
-	int kulcs_abc[]={0,1,2,3,4,5,6,7,8,9,'-','*','+','/'};
-//int ii;
-//int ji;
-//int ki;
-//int li;
+	int kulcs_abc[]={'0','1','2','3','4','5','6','7','8','9','-','*','+','/'};
+
 
   char kulcs[KULCS_MERET];
   char titkos[MAX_TITKOS];
@@ -90,13 +87,9 @@ main (void)
 
 
   for (int ii = 0; ii < 14; ++ii)
-
     for (int ji = 0; ji < 14; ++ji)
-
       for (int ki = 0; ki < 14; ++ki)
-
 	for (int li = 0; li < 14; ++li)
-
 	 // for (int mi = '0'; mi <= '9'; ++mi)
 	  //  for (int ni = '0'; ni <= '9'; ++ni)
 	     // for (int oi = '0'; oi <= '9'; ++oi)
@@ -114,7 +107,7 @@ main (void)
 		    if (exor_tores (kulcs, KULCS_MERET, titkos, p - titkos))
 		      printf
 			("Kulcs: [%c%c%c%c]\nTiszta szoveg: [%s]\n",
-			 ii, ji, ki, li, titkos);
+			 kulcs_abc[ii], kulcs_abc[ji], kulcs_abc[ki], kulcs_abc[li], titkos);
 
 		    // ujra EXOR-ozunk, igy nem kell egy masodik buffer  
 		    exor (kulcs, KULCS_MERET, titkos, p - titkos);
