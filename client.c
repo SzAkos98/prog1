@@ -239,8 +239,17 @@ if(Ans1==0){
 				 std::cout<<deck[card_id].val<<" ";
 				 std::cout<<deck[card_id].color<<" "<<std::endl;
 			printf("Pontszám: %d \n",sumP);
+if(sumP<=21){
+		Ans1=0;
 		scanf("%d", &Ans1);
-		if(sumP<=21){
+		sprintf(buffer, "%d", Ans1);
+		   trnmsize = send(fd, buffer, sizeof buffer, flags);
+		   if (trnmsize < 0) {
+		      error("%s: Cannot send data to server.\n", argv[0]);
+		      exit(3);
+		  }
+}
+		/*if(sumP<=21){
 
 
 		sprintf(buffer, "%d", Ans1);
@@ -259,16 +268,16 @@ rcvsize = recv( fd, buffer, sizeof buffer, flags );
 			      exit(4);
 
 			   }
-			sscanf(buffer, "%d", &sumP);
+			sscanf(buffer, "%d", &sumP);*/
 		  if(sumP>21){
-
-			   rcvsize = recv( fd, buffer, sizeof buffer, flags );
+			 rcvsize = recv( fd, buffer, sizeof buffer, flags );
 			   if (rcvsize < 0) {
 			      error("%s: Cannot receive data from the socket.\n", argv[0]);
 			      exit(4);
 
 			   }
-			printf("%s\n",buffer);
+			printf("%s",buffer);
+
 			printf("Új osztás?\n 1.igen 2.nem\n");
 			scanf("%d", &ans);
 			if(ans==1){
