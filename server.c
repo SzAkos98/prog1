@@ -27,7 +27,7 @@ public:
   std::string color;
   int card_val;
   std::string val;
-// bool operator==(const int & id) const { return this->id == id;}
+
 }  ;
  std::string colors []  = {"Káró","Treff","Kör","Pikk"};
  std::string vals[] = {"1","2","3","4","5","6","7","8","9","10","Jumbó","Dáma","Király","Ász"};
@@ -86,10 +86,7 @@ return cards;
 }
 
 
-/*void show_deck (std::vector<int> v, const std::vector<Deck> &cards){
-for(int j=0;j<v.size();j++)
-for(int i=0;i<sards.size();i++){
-if(v[j] == cards[i].id){*/
+
 
 
 
@@ -104,19 +101,19 @@ make_deck(deck);
 
 
    /* Declarations */
-   int fd;	        	           		// socket endpt
+   int fd;	        	        // socket endpt
    int fdc;                        	// socket endpt
    int flags;                      	// rcv flags
    struct sockaddr_in server;      	// socket name (addr) of server
    struct sockaddr_in client;	     	// socket name of client
    int server_size;                	// length of the socket addr. server
-   unsigned int client_size;                	// length of the socket addr. client
-   int bytes;		           					// length of buffer 
+   unsigned int client_size;            // length of the socket addr. client
+   int bytes;		          	// length of buffer 
    int rcvsize;                    	// received bytes
    int trnmsize;                   	// transmitted bytes
    int err;                        	// error code
    char on;                        	// 
-   char buffer[BUFSIZE+1];	     		// datagram dat buffer area   
+   char buffer[BUFSIZE+1];	     	// datagram dat buffer area   
 memset(&buffer, 0, sizeof buffer);
    /* Initialization */
    on                     = 1;
@@ -172,10 +169,10 @@ int ans;
 int sumD=0;
 int sumP=0;
 int x =0;
-if (x==0){
+int Ans1=0;
 
+if (x==0){
 	   sprintf(buffer,"%d", dealer_deck.front().id);
-	   //bytes = strlen(buffer) + 1;
 	   trnmsize = send(fdc, buffer, sizeof buffer, flags);
 	   if (trnmsize < 0) {
 	      error("%s: Cannot send data to the client.\n",argv[0]);
@@ -185,14 +182,11 @@ if (x==0){
 	sumP+=deck[ID].card_val;
 	dealer_deck.pop_front();
 	x++;
-
 }
 
 
 if (x==1){
-
 	   sprintf(buffer,"%d", dealer_deck.front().id);
-	   //bytes = strlen(buffer) + 1;
 	   trnmsize = send(fdc, buffer, sizeof buffer, flags);
 	   if (trnmsize < 0) {
 	      error("%s: Cannot send data to the client.\n",argv[0]);
@@ -206,9 +200,7 @@ x++;
 
 
 if (x==2){
-
 	    sprintf(buffer,"%d", dealer_deck.front().id);
-	   //bytes = strlen(buffer) + 1;
 	   trnmsize = send(fdc, buffer, sizeof buffer, flags);
 	   if (trnmsize < 0) {
 	      error("%s: Cannot send data to the client.\n",argv[0]);
@@ -221,9 +213,7 @@ if (x==2){
 }
 
 if (x==3){
-
 	   sprintf(buffer,"%d", dealer_deck.front().id);
-	   //bytes = strlen(buffer) + 1;
 	   trnmsize = send(fdc, buffer, sizeof buffer, flags);
 	   if (trnmsize < 0) {
 	      error("%s: Cannot send data to the client.\n",argv[0]);
@@ -237,7 +227,6 @@ if (x==3){
 
 sprintf(buffer,"%d", sumP);
 
-   //bytes = strlen(buffer) + 1;
    trnmsize = send(fdc, buffer, sizeof buffer, flags);
    if (trnmsize < 0) {
       error("%s: Cannot send data to the client.\n",argv[0]);
@@ -248,19 +237,19 @@ sprintf(buffer,"%d", sumP);
 //--------------------------------------------------
 printf("Kezdő lapok kiosztva.\n");
 //--------------------------------------------------
-int z=1;
-while(z=1){
+int Z=1;
+while(Z=1){
+Z--;
+	if(Ans1==0){
 	   rcvsize = recv( fdc, buffer, sizeof buffer, flags );
 	   if (rcvsize < 0) {
 	      error("%s: Cannot receive from the socket\n",argv[0]);
 	      exit(5);
 	      }
 
-
-
-	sscanf(buffer, "%d", &ans);
-	if(ans==1){
-
+	sscanf(buffer, "%d", &Ans1);
+}
+	if(Ans1==1){
 		   sprintf(buffer,"%d", dealer_deck.front().id);
 		   //bytes = strlen(buffer) + 1;
 		   trnmsize = send(fdc, buffer, sizeof buffer, flags);
@@ -268,133 +257,142 @@ while(z=1){
 		      error("%s: Cannot send data to the client.\n",argv[0]);
 		      exit(6);
 		     } 
+
 		ID=dealer_deck.front().id;
 		sumP+=deck[ID].card_val;
 		dealer_deck.pop_front();
-
 		sprintf(buffer,"%d", sumP);
-		   //bytes = strlen(buffer) + 1;
+
 		   trnmsize = send(fdc, buffer, sizeof buffer, flags);
 		   if (trnmsize < 0) {
 		      error("%s: Cannot send data to the client.\n",argv[0]);
 		      exit(6);
 		     } 
-	   rcvsize = recv( fdc, buffer, sizeof buffer, flags );
-	   if (rcvsize < 0) {
-	      error("%s: Cannot receive from the socket\n",argv[0]);
-	      exit(5);
-	      }
+	if(sumP<=21){
+		   rcvsize = recv( fdc, buffer, sizeof buffer, flags );
+		   if (rcvsize < 0) {
+		      error("%s: Cannot receive from the socket\n",argv[0]);
+		      exit(5);
+		      }
 
-
-
-	sscanf(buffer, "%d", &ans);
-
-
-	
+		sscanf(buffer, "%d", &Ans1);
+	}
 	if(sumP>21){
+
+		sprintf(buffer,"%d", sumP);
+		   trnmsize = send(fdc, buffer, sizeof buffer, flags);
+		   if (trnmsize < 0) {
+		      error("%s: Cannot send data to the client.\n",argv[0]);
+		      exit(6);
+		     } 
 		sprintf(buffer,"Vesztettél");
 		   trnmsize = send(fdc, buffer, sizeof buffer, flags);
 		   if (trnmsize < 0) {
 		      error("%s: Cannot send data to the client.\n",argv[0]);
 		      exit(6);
 		     } 
-
-
 	}
+
 	   rcvsize = recv( fdc, buffer, sizeof buffer, flags );
 	   if (rcvsize < 0) {
 	      error("%s: Cannot receive from the socket\n",argv[0]);
 	      exit(5);
 	      }
 
+	sscanf(buffer, "%d", &Ans1);
 
-
-	sscanf(buffer, "%d", &ans);
 }
+	 else if(Ans1==2){
 
-	 else if(ans==2){
 		while( sumD<20 ){
+
 			sprintf(buffer,"%d", dealer_deck.front().id);
-			   //bytes = strlen(buffer) + 1;
-			   trnmsize = send(fdc, buffer, sizeof buffer, flags);
-			   if (trnmsize < 0) {
-			      error("%s: Cannot send data to the client.\n",argv[0]);
-			      exit(6);
-			     } 
+
+			trnmsize = send(fdc, buffer, sizeof buffer, flags);
+			if (trnmsize < 0) {
+				error("%s: Cannot send data to the client.\n",argv[0]);
+				exit(6);
+				} 
+
 			ID=dealer_deck.front().id;
 			sumD+=deck[ID].card_val;
 			dealer_deck.pop_front();
-
 			sprintf(buffer,"%d", sumD);
-			   //bytes = strlen(buffer) + 1;
-			   trnmsize = send(fdc, buffer, sizeof buffer, flags);
-			   if (trnmsize < 0) {
-			      error("%s: Cannot send data to the client.\n",argv[0]);
-			      exit(6);
-			     } 
-	   rcvsize = recv( fdc, buffer, sizeof buffer, flags );
-	   if (rcvsize < 0) {
-	      error("%s: Cannot receive from the socket\n",argv[0]);
-	      exit(5);
-	      }
 
+			trnmsize = send(fdc, buffer, sizeof buffer, flags);
+			if (trnmsize < 0) {
+				error("%s: Cannot send data to the client.\n",argv[0]);
+				exit(6);
+				} 
 
+			   rcvsize = recv( fdc, buffer, sizeof buffer, flags );
+			   if (rcvsize < 0) {
+				   error("%s: Cannot receive from the socket\n",argv[0]);
+				   exit(5);
+				   }
 
-	sscanf(buffer, "%d", &ans);
+			sscanf(buffer, "%d", &Ans1);
+
 			if(sumD<=21 && sumD>=20){
 			sprintf(buffer,"%d", sumD);
-			   //bytes = strlen(buffer) + 1;
-			   trnmsize = send(fdc, buffer, sizeof buffer, flags);
-			   if (trnmsize < 0) {
-			      error("%s: Cannot send data to the client.\n",argv[0]);
-			      exit(6);
-			     } 
-	   rcvsize = recv( fdc, buffer, sizeof buffer, flags );
-	   if (rcvsize < 0) {
-	      error("%s: Cannot receive from the socket\n",argv[0]);
-	      exit(5);
-	      }
+			trnmsize = send(fdc, buffer, sizeof buffer, flags);
+				if (trnmsize < 0) {
+					error("%s: Cannot send data to the client.\n",argv[0]);
+					exit(6);
+					} 
+			rcvsize = recv( fdc, buffer, sizeof buffer, flags );
+			if (rcvsize < 0) {
+				error("%s: Cannot receive from the socket\n",argv[0]);
+				exit(5);
+				}
 
-
-
-	sscanf(buffer, "%d", &ans);
+			sscanf(buffer, "%d", &Ans1);
 
 			}
-			if(sumD>21){
-						sprintf(buffer,"Nyertél");
-		   trnmsize = send(fdc, buffer, sizeof buffer, flags);
-		   if (trnmsize < 0) {
-		      error("%s: Cannot send data to the client.\n",argv[0]);
-		      exit(6);
-		     } 
+		if(sumD>21){
+		sprintf(buffer,"Nyertél");
+		trnmsize = send(fdc, buffer, sizeof buffer, flags);
+		if (trnmsize < 0) {
+			error("%s: Cannot send data to the client.\n",argv[0]);
+			exit(6);
+		} 
+			rcvsize = recv( fdc, buffer, sizeof buffer, flags );
+			if (rcvsize < 0) {
+			error("%s: Cannot receive from the socket\n",argv[0]);
+			exit(5);
+			  }
+			sscanf(buffer, "%d", &ans);
+
+			if(ans==1){
+				Z++;
 			}
-		}
+			if(ans==2){
+			  	 close (fd);
+		  		 exit(0);
+			}
+			else{
+			  	 close (fd);
+		  		 exit(0);
+			}
 	}
+}
+}
 
-
-
-
-	 else if(ans==3){
+	 else if(Ans1==3){
 		   close (fdc);
 		   close (fd);
 		   exit(0);
 		}
-
-
-
-
 	else{
 		sprintf(buffer,"Wrong input");
-		   //bytes = strlen(buffer) + 1;
-		   trnmsize = send(fdc, buffer, sizeof buffer, flags);
-		   if (trnmsize < 0) {
-		      error("%s: Cannot send data to the client.\n",argv[0]);
-		      exit(6);
-		     } 
+		trnmsize = send(fdc, buffer, sizeof buffer, flags);
+		if (trnmsize < 0) {
+		   error("%s: Cannot send data to the client.\n",argv[0]);
+		   exit(6);
+		  } 
 
 	}
 }
 
 
 }
-
