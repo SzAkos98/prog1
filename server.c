@@ -268,7 +268,17 @@ Z--;
 		      error("%s: Cannot send data to the client.\n",argv[0]);
 		      exit(6);
 		     } 
-	if(sumP<=21){
+if(sumP<=21){
+Ans1=0;
+		   rcvsize = recv( fdc, buffer, sizeof buffer, flags );
+		   if (rcvsize < 0) {
+		      error("%s: Cannot receive from the socket\n",argv[0]);
+		      exit(5);
+		      }
+
+	sscanf(buffer, "%d", &Ans1);
+}
+	/*if(sumP<=21){
 		   rcvsize = recv( fdc, buffer, sizeof buffer, flags );
 		   if (rcvsize < 0) {
 		      error("%s: Cannot receive from the socket\n",argv[0]);
@@ -276,15 +286,9 @@ Z--;
 		      }
 
 		sscanf(buffer, "%d", &Ans1);
-	}
+	}*/
 	if(sumP>21){
 
-		sprintf(buffer,"%d", sumP);
-		   trnmsize = send(fdc, buffer, sizeof buffer, flags);
-		   if (trnmsize < 0) {
-		      error("%s: Cannot send data to the client.\n",argv[0]);
-		      exit(6);
-		     } 
 		sprintf(buffer,"Vesztettél");
 		   trnmsize = send(fdc, buffer, sizeof buffer, flags);
 		   if (trnmsize < 0) {
@@ -293,13 +297,24 @@ Z--;
 		     } 
 	}
 
-	   rcvsize = recv( fdc, buffer, sizeof buffer, flags );
-	   if (rcvsize < 0) {
-	      error("%s: Cannot receive from the socket\n",argv[0]);
-	      exit(5);
-	      }
+	   			rcvsize = recv( fdc, buffer, sizeof buffer, flags );
+			if (rcvsize < 0) {
+			error("%s: Cannot receive from the socket\n",argv[0]);
+			exit(5);
+			  }
+			sscanf(buffer, "%d", &ans);
 
-	sscanf(buffer, "%d", &Ans1);
+			if(ans==1){
+				Z++;
+			}
+			if(ans==2){
+			  	 close (fd);
+		  		 exit(0);
+			}
+			else{
+			  	 close (fd);
+		  		 exit(0);
+			}
 
 }
 	 else if(Ans1==2){
