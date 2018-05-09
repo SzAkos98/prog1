@@ -141,7 +141,6 @@ int x=0;
 std::vector<int> dealer_card(2);
 int card_id;
 if(x==0){
-	  // bytes = strlen(buffer)+1;
 	   rcvsize = recv( fd, buffer, sizeof buffer, flags );
 	   if (rcvsize < 0) {
 	      error("%s: Cannot receive data from the socket.\n", argv[0]);
@@ -160,13 +159,10 @@ if(x==1){
 	   if (rcvsize < 0) {
 	      error("%s: Cannot receive data from the socket.\n", argv[0]);
 	      exit(4);
-
 	   }
 	x++;
 	sscanf(buffer, "%d", &card_id);
 	dealer_card.push_back(card_id);
-	 //printf("%d , ",card_id);
-
 }
 
 if(x==2){
@@ -174,13 +170,11 @@ if(x==2){
 	   if (rcvsize < 0) {
 	      error("%s: Cannot receive data from the socket.\n", argv[0]);
 	      exit(4);
-
 	   }
 	x++;
 	sscanf(buffer, "%d", &card_id);
 	 std::cout<<deck[card_id].val<<" ";
 	 std::cout<<deck[card_id].color<<" "<<std::endl;
-
 }
 
 if(x==3){
@@ -188,14 +182,11 @@ if(x==3){
 	   if (rcvsize < 0) {
 	      error("%s: Cannot receive data from the socket.\n", argv[0]);
 	      exit(4);
-
 	   }
 	x++;
 	printf("Az osztó 2. lapja: ");
 	 std::cout<<deck[card_id].val<<" ";
 	 std::cout<<deck[card_id].color<<" "<<std::endl;
-
-
 }
 
 
@@ -211,20 +202,23 @@ printf("Pontszám: %d \n",sumP);
 
 //-------------------------------------------------------
 int ans;
+int Ans1=0;
 int ID;
-int z=1;
-	while(z=1){
+int Z=1;
 
-		scanf("%d", &ans);
+	while(Z=1){
+Z--;
+if(Ans1==0){
+		scanf("%d", &Ans1);
 
-		sprintf(buffer, "%d", ans);
+		sprintf(buffer, "%d", Ans1);
 		   trnmsize = send(fd, buffer, sizeof buffer, flags);
 		   if (trnmsize < 0) {
 		      error("%s: Cannot send data to server.\n", argv[0]);
 		      exit(3);
 		  }
-
-		if(sumP<=20 && ans==1){
+}
+		if(Ans1==1){
 
 			printf("Új lap:\n");
 
@@ -245,27 +239,11 @@ int z=1;
 				 std::cout<<deck[card_id].val<<" ";
 				 std::cout<<deck[card_id].color<<" "<<std::endl;
 			printf("Pontszám: %d \n",sumP);
-		scanf("%d", &ans);
+		scanf("%d", &Ans1);
+		if(sumP<=21){
 
-		sprintf(buffer, "%d", ans);
-		   trnmsize = send(fd, buffer, sizeof buffer, flags);
-		   if (trnmsize < 0) {
-		      error("%s: Cannot send data to server.\n", argv[0]);
-		      exit(3);
-		  }
 
-			}
-		 if(sumP>21){
-			   rcvsize = recv( fd, buffer, sizeof buffer, flags );
-			   if (rcvsize < 0) {
-			      error("%s: Cannot receive data from the socket.\n", argv[0]);
-			      exit(4);
-
-			   }
-			printf("%s\n",buffer);
-		scanf("%d", &ans);
-
-		sprintf(buffer, "%d", ans);
+		sprintf(buffer, "%d", Ans1);
 		   trnmsize = send(fd, buffer, sizeof buffer, flags);
 		   if (trnmsize < 0) {
 		      error("%s: Cannot send data to server.\n", argv[0]);
@@ -273,15 +251,67 @@ int z=1;
 		  }
 		}
 
+
+//_-----------------------------------------------------------------------------------------------------
+rcvsize = recv( fd, buffer, sizeof buffer, flags );
+			   if (rcvsize < 0) {
+			      error("%s: Cannot receive data from the socket.\n", argv[0]);
+			      exit(4);
+
+			   }
+			sscanf(buffer, "%d", &sumP);
+		  if(sumP>21){
+
+			   rcvsize = recv( fd, buffer, sizeof buffer, flags );
+			   if (rcvsize < 0) {
+			      error("%s: Cannot receive data from the socket.\n", argv[0]);
+			      exit(4);
+
+			   }
+			printf("%s\n",buffer);
+			printf("Új osztás?\n 1.igen 2.nem\n");
+			scanf("%d", &ans);
+			if(ans==1){
+				sprintf(buffer, "%d", ans);
+				   trnmsize = send(fd, buffer, sizeof buffer, flags);
+				   if (trnmsize < 0) {
+				      error("%s: Cannot send data to server.\n", argv[0]);
+				      exit(3);
+				  }
+				Z++;
+			}
+			if(ans==2){
+			  	 close (fd);
+		  		 exit(0);
+			}
+			else{
+			  	 close (fd);
+		  		 exit(0);
+			}
+			}
+//______________________________________________________________________________________________________
+			scanf("%d", &Ans1);
+
+		sprintf(buffer, "%d", Ans1);
+		   trnmsize = send(fd, buffer, sizeof buffer, flags);
+		   if (trnmsize < 0) {
+		      error("%s: Cannot send data to server.\n", argv[0]);
+		      exit(3);
+		  }
+
+
+			}
+			   
+		
+
 		int sumD;
-		 if(ans==2){
+		 if(Ans1==2){
 
 			while( sumD<20){
 			   rcvsize = recv( fd, buffer, sizeof buffer, flags );
 			   if (rcvsize < 0) {
 			      error("%s: Cannot receive data from the socket.\n", argv[0]);
 			      exit(4);
-
 			   }
 
 			sscanf(buffer, "%d", &card_id);
@@ -291,7 +321,6 @@ int z=1;
 			   if (rcvsize < 0) {
 			      error("%s: Cannot receive data from the socket.\n", argv[0]);
 			      exit(4);
-
 			   }
 				for(int i=0; i<dealer_card.size();i++){
 					std::cout<<deck[dealer_card[i]].val<<" ";
@@ -300,20 +329,21 @@ int z=1;
 				 std::cout<<deck[card_id].val<<" ";
 				 std::cout<<deck[card_id].color<<" "<<std::endl;
 				printf("Osztó pontszáma: %s \n", buffer);
-		scanf("%d", &ans);
 
-		sprintf(buffer, "%d", ans);
-		   trnmsize = send(fd, buffer, sizeof buffer, flags);
-		   if (trnmsize < 0) {
-		      error("%s: Cannot send data to server.\n", argv[0]);
-		      exit(3);
-		  }
+			scanf("%d", &ans);
 
-			}
+			sprintf(buffer, "%d", ans);
+			   trnmsize = send(fd, buffer, sizeof buffer, flags);
+			   if (trnmsize < 0) {
+			      error("%s: Cannot send data to server.\n", argv[0]);
+			      exit(3);
+			  }
+
+			
 
 
 			sscanf(buffer, "%d", &sumD);
-			 if(sumD<=21){
+		if(sumD<=21){
 				   rcvsize = recv( fd, buffer, sizeof buffer, flags );
 				   if (rcvsize < 0) {
 				      error("%s: Cannot receive data from the socket.\n", argv[0]);
@@ -321,39 +351,82 @@ int z=1;
 
 				   }
 			}
-			if(sumP<sumD){
+		if(sumP<sumD && sumD<=21){
 				printf("Vesztettél\n");
-		   close (fd);
-		   exit(0);
+			printf("Új osztás?\n 1.igen 2.nem\n");
+			scanf("%d", &ans);
+			if(ans==1){
+				sprintf(buffer, "%d", ans);
+				   trnmsize = send(fd, buffer, sizeof buffer, flags);
+				   if (trnmsize < 0) {
+				      error("%s: Cannot send data to server.\n", argv[0]);
+				      exit(3);
+				  }
+				Z++;
 			}
-			if(sumP>sumD){
+			if(ans==2){
+			  	 close (fd);
+		  		 exit(0);
+			}
+			else{
+			  	 close (fd);
+		  		 exit(0);
+			}
+			}
+			if(sumP>sumD && sumD<=21 || sumP>sumD && sumD<20){
 				printf("Nyertél\n");
-		   close (fd);
-		   exit(0);
+			printf("Új osztás?\n 1.igen 2.nem\n");
+			scanf("%d", &ans);
+			if(ans==1){
+				sprintf(buffer, "%d", ans);
+				   trnmsize = send(fd, buffer, sizeof buffer, flags);
+				   if (trnmsize < 0) {
+				      error("%s: Cannot send data to server.\n", argv[0]);
+				      exit(3);
+				  }
+				Z++;
 			}
-			if(sumP==sumD){
-				printf("Döntetlen\n");
-		   close (fd);
-		   exit(0);
+			if(ans==2){
+			  	 close (fd);
+		  		 exit(0);
+			}
+			else{
+			  	 close (fd);
+		  		 exit(0);
+			}
 			}
 			
-
-			
-			
-			else if(sumD>21){
+		else if(sumD>21){
 				   rcvsize = recv( fd, buffer, sizeof buffer, flags );
 				   if (rcvsize < 0) {
 				      error("%s: Cannot receive data from the socket.\n", argv[0]);
 				      exit(4);
 
 				   }
-				printf("Graturálok nyertél.\n");
-		   close (fd);
-		   exit(0);
+			printf("Graturálok nyertél.\n");
+			printf("Új osztás?\n 1.igen 2.nem\n");
+			scanf("%d", &ans);
+			if(ans==1){
+				sprintf(buffer, "%d", ans);
+				   trnmsize = send(fd, buffer, sizeof buffer, flags);
+				   if (trnmsize < 0) {
+				      error("%s: Cannot send data to server.\n", argv[0]);
+				      exit(3);
+				  }
+				Z++;
 			}
-
+			if(ans==2){
+			  	 close (fd);
+		  		 exit(0);
+			}
+			else{
+			  	 close (fd);
+		  		 exit(0);
+			}
+			}
 		}
-		if(ans==3){
+		}
+		if(Ans1==3){
 		   close (fd);
 		   exit(0);
 		}
